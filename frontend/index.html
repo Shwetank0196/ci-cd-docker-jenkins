@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Student Management System</h1>
+            <p class="subtitle">A simple Docker project for learning containerization</p>
+        </header>
+
+        <main>
+            <!-- Add Student Form -->
+            <section class="form-section">
+                <h2>Add New Student</h2>
+                <form id="studentForm">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="Enter student name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age *</label>
+                        <input type="number" id="age" name="age" required min="1" max="100" placeholder="Enter age">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fatherName">Father's Name *</label>
+                        <input type="text" id="fatherName" name="father_name" required placeholder="Enter father's name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="aadhaar">Aadhaar Number *</label>
+                        <input type="text" id="aadhaar" name="aadhaar_number" required
+                               pattern="[0-9]{12}" maxlength="12" placeholder="Enter 12-digit Aadhaar number">
+                        <small>Must be exactly 12 digits</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="class">Class *</label>
+                        <input type="text" id="class" name="class" required placeholder="Enter class (e.g., 10th, 12th)">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Add Student</button>
+                        <button type="reset" class="btn btn-secondary">Clear Form</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Students List -->
+            <section class="list-section">
+                <div class="section-header">
+                    <h2>Students List</h2>
+                    <span id="studentCount" class="count-badge">0 students</span>
+                </div>
+
+                <div id="messageBox" class="message-box hidden"></div>
+
+                <div class="table-container">
+                    <table id="studentsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Father's Name</th>
+                                <th>Aadhaar Number</th>
+                                <th>Class</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <tr>
+                                <td colspan="7" class="loading">Loading students...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with Docker | Node.js + Express + MySQL + Nginx</p>
+        </footer>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Student</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+
+                <div class="form-group">
+                    <label for="editName">Name *</label>
+                    <input type="text" id="editName" required placeholder="Enter student name">
+                </div>
+
+                <div class="form-group">
+                    <label for="editAge">Age *</label>
+                    <input type="number" id="editAge" required min="1" max="100" placeholder="Enter age">
+                </div>
+
+                <div class="form-group">
+                    <label for="editFatherName">Father's Name *</label>
+                    <input type="text" id="editFatherName" required placeholder="Enter father's name">
+                </div>
+
+                <div class="form-group">
+                    <label for="editAadhaar">Aadhaar Number *</label>
+                    <input type="text" id="editAadhaar" required pattern="[0-9]{12}"
+                           maxlength="12" placeholder="Enter 12-digit Aadhaar number">
+                </div>
+
+                <div class="form-group">
+                    <label for="editClass">Class *</label>
+                    <input type="text" id="editClass" required placeholder="Enter class">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update Student</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

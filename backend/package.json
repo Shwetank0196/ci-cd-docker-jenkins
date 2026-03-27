@@ -1,0 +1,18 @@
+{
+  "name": "student-management-api",
+  "version": "1.0.0",
+  "description": "Simple student management REST API for Docker learning",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["docker", "express", "mysql", "rest-api"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.6.5",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  }
+}

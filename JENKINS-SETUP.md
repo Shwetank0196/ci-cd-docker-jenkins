@@ -13,6 +13,90 @@ Complete guide to set up automated deployment for Docker project using Jenkins.
 
 ---
 
+## ⚠️ Pre-Setup Fix (IMPORTANT)
+
+**Before starting Jenkins setup, fix these common issues:**
+
+### 🔧 Fix 1: Install Git (Required for Jenkins)
+
+**If you see error like:**
+```
+Cannot run program "git": No such file or directory
+```
+
+**Run:**
+```bash
+# Install Git
+sudo dnf install git -y
+
+# Verify installation
+git --version
+
+# Check path
+which git
+```
+
+**👉 Expected path:** `/usr/bin/git`
+
+**(Optional - if Jenkins still can't detect Git):**
+
+1. Go to Jenkins → **Manage Jenkins** → **Tools**
+2. Scroll to **Git** section
+3. Add Git manually:
+   - **Name**: `Default`
+   - **Path**: `/usr/bin/git`
+4. **Save**
+
+---
+
+### 🕒 Fix 2: Fix Date/Time (SSL Certificate Error)
+
+**If you see error like:**
+```
+certificate is not yet valid
+```
+
+**👉 This means your server time is incorrect.**
+
+**Fix it using NTP (chrony):**
+```bash
+# Install chrony
+sudo dnf install chrony -y
+
+# Enable and start service
+sudo systemctl enable chronyd
+sudo systemctl start chronyd
+
+# Set timezone (example: India)
+sudo timedatectl set-timezone Asia/Kolkata
+
+# Force time sync
+sudo chronyc makestep
+
+# Verify
+timedatectl status
+date
+```
+
+**👉 Expected output:**
+```
+System clock synchronized: yes
+```
+
+**Common Timezones:**
+- `Asia/Kolkata` (India)
+- `America/New_York` (US East)
+- `Europe/London` (UK)
+- `Asia/Dubai` (UAE)
+- `UTC` (Universal)
+
+**After fixing, restart Jenkins:**
+```bash
+sudo systemctl restart jenkins
+```
+
+---
+
 ## 🔧 Step 1: Give Jenkins Permission to Use Docker
 
 Run these commands on your **Linux server** (via SSH or terminal):
@@ -122,6 +206,25 @@ The Jenkinsfile automates these steps:
 ---
 
 ## 🐛 Troubleshooting
+
+### Issue: "Cannot run program 'git': No such file or directory"
+**Solution**: Git is not installed. Install it:
+```bash
+sudo dnf install git -y
+git --version
+sudo systemctl restart jenkins
+```
+
+### Issue: "SSL certificate problem: certificate is not yet valid"
+**Solution**: Server time is incorrect. Fix with chrony:
+```bash
+sudo dnf install chrony -y
+sudo systemctl enable chronyd --now
+sudo timedatectl set-timezone Asia/Kolkata
+sudo chronyc makestep
+date
+sudo systemctl restart jenkins
+```
 
 ### Issue: "permission denied while trying to connect to docker"
 **Solution**: Run the permission commands from Step 1 again.
